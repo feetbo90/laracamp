@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Camp;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,6 +29,16 @@ class Checkout extends Model
     public function Camp(): BelongsTo
     {
         return $this->belongsTo(Camp::class);
+    }
+
+    /**
+     * Get the User that owns the Checkout
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function User(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
 }
