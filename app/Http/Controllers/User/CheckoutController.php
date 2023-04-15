@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\User;
 
-use Auth;
-use Mail;
-use App\Models\Camp;
+use App\Http\Controllers\Controller;
 use App\Models\Checkout;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Mail\Checkout\AfterCheckout;
 use App\Http\Requests\User\Checkout\Store;
+use App\Mail\Checkout\AfterCheckout;
+use App\Models\Camp;
+use Auth;
+use Mail;
 use Str;
 use Midtrans;
+
 class CheckoutController extends Controller
 {
 
@@ -57,8 +58,6 @@ class CheckoutController extends Controller
      */
     public function store(Store $request, Camp $camp)
     {
-        //
-        // return $request->all();
         // mapping request data
         $data = $request->all();
         $data['user_id'] = Auth::id();
@@ -69,14 +68,17 @@ class CheckoutController extends Controller
         $user->email = $data['email'];
         $user->name = $data['name'];
         $user->occupation = $data['occupation'];
-        // $user->phone = $data['phone'];
-        // $user->address = $data['address'];
+        $user->phone = $data['phone'];
+        $user->address = $data['address'];
         $user->save();
 
         // create checkout
         $checkout = Checkout::create($data);
+        $this->getSnapRedirect($checkout);
+
         // sending email
         Mail::to(Auth::user()->email)->send(new AfterCheckout($checkout));
+
         return redirect(route('checkout.success'));
     }
 
@@ -125,7 +127,8 @@ class CheckoutController extends Controller
         //
     }
 
-    public function success() {
+    public function success()
+    {
         return view('checkout.success');
     }
 

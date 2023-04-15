@@ -28,12 +28,7 @@
                                         <td>{{$checkout->Camp->price}}k</td>
                                         <td>{{$checkout->created_at->format('M d Y')}}</td>
                                         <td>
-                                            {{-- <strong>{{$chekcout->payment_status}}</strong> --}}
-                                            @if ($checkout->is_paid)
-                                                <span class="badge bg-success">Paid</span>
-                                            @else
-                                                <span class="badge bg-warning">Waiting</span>
-                                            @endif
+                                            <strong>{{$chekcout->payment_status}}</strong>
                                         </td>
                                     </tr>
                                 @empty
